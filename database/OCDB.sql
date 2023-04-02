@@ -8,6 +8,20 @@ DROP TABLE IF EXISTS character_in_image;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS character_relation;
 DROP TABLE IF EXISTS character;
+DROP TABLE IF EXISTS race;
+DROP TABLE IF EXISTS gender;
+
+CREATE TABLE IF NOT EXISTS race (
+	raceID INT GENERATED ALWAYS AS IDENTITY,
+	name VARCHAR(50) NOT NULL UNIQUE,
+	PRIMARY KEY (raceID)
+);
+
+CREATE TABLE IF NOT EXISTS gender (
+	genderID INT GENERATED ALWAYS AS IDENTITY,
+	name VARCHAR(50) NOT NULL UNIQUE,
+	PRIMARY KEY (genderID)
+);
 
 CREATE TABLE IF NOT EXISTS character (
 	characterID INT GENERATED ALWAYS AS IDENTITY,
@@ -16,10 +30,12 @@ CREATE TABLE IF NOT EXISTS character (
 	personality TEXT,
 	appearance TEXT,
 	background TEXT,
-	gender VARCHAR(25),
-	race VARCHAR(25),
+	genderID int,
+	raceID int,
 	ethnicity VARCHAR(25),
-	PRIMARY KEY (characterID)
+	PRIMARY KEY (characterID),
+	FOREIGN KEY (genderID) REFERENCES gender(genderID),
+	FOREIGN KEY (raceID) REFERENCES race(raceID)
 );
 
 CREATE TABLE IF NOT EXISTS source (
