@@ -11,20 +11,20 @@ DROP TABLE IF EXISTS character;
 
 CREATE TABLE IF NOT EXISTS character (
 	characterID INT GENERATED ALWAYS AS IDENTITY,
-	name VARCHAR[100] NOT NULL,
+	name VARCHAR(100) NOT NULL,
 	dob DATE,
 	personality TEXT,
 	appearance TEXT,
 	background TEXT,
-	gender VARCHAR[25],
-	race VARCHAR[25],
-	ethnicity VARCHAR[25],
+	gender VARCHAR(25),
+	race VARCHAR(25),
+	ethnicity VARCHAR(25),
 	PRIMARY KEY (characterID)
 );
 
 CREATE TABLE IF NOT EXISTS source (
 	sourceID INT GENERATED ALWAYS AS IDENTITY,
-	name VARCHAR[100] UNIQUE NOT NULL,
+	name VARCHAR(100) UNIQUE NOT NULL,
 	PRIMARY KEY (sourceID)
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS character_source (
 
 CREATE TABLE IF NOT EXISTS thing (
 	thingID INT GENERATED ALWAYS AS IDENTITY,
-	name VARCHAR[100] UNIQUE NOT NULL,
+	name VARCHAR(100) UNIQUE NOT NULL,
 	PRIMARY KEY (thingID)
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS character_dislikes (
 
 CREATE TABLE IF NOT EXISTS image (
 	imageID INT GENERATED ALWAYS AS IDENTITY,
-	imageURL VARCHAR[500] UNIQUE NOT NULL,
+	imageURL VARCHAR(500) UNIQUE NOT NULL,
 	PRIMARY KEY (imageID)
 );
 
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS character_relation (
 	relationID INT GENERATED ALWAYS AS IDENTITY,
 	characterID INT NOT NULL,
 	targetID INT NOT NULL,
-	relationship VARCHAR[100] NOT NULL,
+	relationship VARCHAR(100) NOT NULL,
 	PRIMARY KEY (relationID),
 	FOREIGN KEY (characterID) REFERENCES character(characterID),
 	FOREIGN KEY (targetID) REFERENCES character(characterID)
