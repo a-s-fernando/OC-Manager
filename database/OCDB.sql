@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS character_source;
 DROP TABLE IF EXISTS source;
 DROP TABLE IF EXISTS character_dislikes;
 DROP TABLE IF EXISTS character_likes;
-DROP TABLE IF EXISTS thing;
 DROP TABLE IF EXISTS character_profile_image;
 DROP TABLE IF EXISTS character_in_image;
 DROP TABLE IF EXISTS image;
@@ -52,26 +51,19 @@ CREATE TABLE IF NOT EXISTS character_source (
 	UNIQUE (characterID, sourceID)
 );
 
-CREATE TABLE IF NOT EXISTS thing (
-	thingID INT GENERATED ALWAYS AS IDENTITY,
-	name VARCHAR(100) UNIQUE NOT NULL,
-	PRIMARY KEY (thingID)
-);
 
 CREATE TABLE IF NOT EXISTS character_likes (
 	characterID INT NOT NULL,
-	thingID INT NOT NULL,
+	name VARCHAR(50) NOT NULL,
 	FOREIGN KEY (characterID) REFERENCES character(characterID),
-	FOREIGN KEY (thingID) REFERENCES thing(thingID),
-	UNIQUE (characterID, thingID)
+	UNIQUE (characterID, name)
 );
 
 CREATE TABLE IF NOT EXISTS character_dislikes (
 	characterID INT NOT NULL,
-	thingID INT NOT NULL,
+	name VARCHAR(50) NOT NULL,
 	FOREIGN KEY (characterID) REFERENCES character(characterID),
-	FOREIGN KEY (thingID) REFERENCES thing(thingID),
-	UNIQUE (characterID, thingID)
+	UNIQUE (characterID, name)
 );
 
 CREATE TABLE IF NOT EXISTS image (
@@ -104,3 +96,12 @@ CREATE TABLE IF NOT EXISTS character_relation (
 	FOREIGN KEY (characterID) REFERENCES character(characterID),
 	FOREIGN KEY (targetID) REFERENCES character(characterID)
 );
+
+CREATE VIEW data AS
+	SELECT character.characterID as id, character.name, dob, personality, appearance, background,
+	gender.name as gender, race.name as race, ethnicity, STRING_AGG(source.name,', ') as source FROM character
+	FULL OUTER JOIN gender ON gender.genderID = character.genderID
+	FULL OUTER JOIN race ON race.raceID = character.raceID
+	FULL OUTER JOIN character_source ON character_source.characterID = character.characterID
+	FULL OUTER JOIN source ON character_source.sourceID = source.sourceID
+	GROUP BY character.characterID, gender.name, race.name;
