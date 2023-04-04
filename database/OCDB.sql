@@ -1,3 +1,5 @@
+DROP VIEW IF EXISTS complete_data;
+DROP VIEW IF EXISTS data;
 DROP TABLE IF EXISTS character_source;
 DROP TABLE IF EXISTS source;
 DROP TABLE IF EXISTS character_dislikes;
@@ -33,8 +35,8 @@ CREATE TABLE IF NOT EXISTS character (
 	raceID int,
 	ethnicity VARCHAR(25),
 	PRIMARY KEY (characterID),
-	FOREIGN KEY (genderID) REFERENCES gender(genderID),
-	FOREIGN KEY (raceID) REFERENCES race(raceID)
+	FOREIGN KEY (genderID) REFERENCES gender(genderID) ON DELETE CASCADE,
+	FOREIGN KEY (raceID) REFERENCES race(raceID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS source (
@@ -46,8 +48,8 @@ CREATE TABLE IF NOT EXISTS source (
 CREATE TABLE IF NOT EXISTS character_source (
 	characterID INT NOT NULL,
 	sourceID INT NOT NULL,
-	FOREIGN KEY (characterID) REFERENCES character(characterID),
-	FOREIGN KEY (sourceID) REFERENCES source(sourceID),
+	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
+	FOREIGN KEY (sourceID) REFERENCES source(sourceID) ON DELETE CASCADE,
 	UNIQUE (characterID, sourceID)
 );
 
@@ -55,14 +57,14 @@ CREATE TABLE IF NOT EXISTS character_source (
 CREATE TABLE IF NOT EXISTS character_likes (
 	characterID INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	FOREIGN KEY (characterID) REFERENCES character(characterID),
+	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
 	UNIQUE (characterID, name)
 );
 
 CREATE TABLE IF NOT EXISTS character_dislikes (
 	characterID INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	FOREIGN KEY (characterID) REFERENCES character(characterID),
+	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
 	UNIQUE (characterID, name)
 );
 
@@ -75,15 +77,15 @@ CREATE TABLE IF NOT EXISTS image (
 CREATE TABLE IF NOT EXISTS character_profile_image (
 	imageID INT NOT NULL,
 	characterID INT UNIQUE NOT NULL,
-	FOREIGN KEY (imageID) REFERENCES image(imageID),
-	FOREIGN KEY (characterID) REFERENCES character(characterID)
+	FOREIGN KEY (imageID) REFERENCES image(imageID) ON DELETE CASCADE,
+	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS character_in_image (
 	imageID INT NOT NULL,
 	characterID INT NOT NULL,
-	FOREIGN KEY (imageID) REFERENCES image(imageID),
-	FOREIGN KEY (characterID) REFERENCES character(characterID),
+	FOREIGN KEY (imageID) REFERENCES image(imageID) ON DELETE CASCADE,
+	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
 	UNIQUE (imageID, characterID)
 );
 
@@ -93,15 +95,34 @@ CREATE TABLE IF NOT EXISTS character_relation (
 	targetID INT NOT NULL,
 	relationship VARCHAR(100) NOT NULL,
 	PRIMARY KEY (relationID),
-	FOREIGN KEY (characterID) REFERENCES character(characterID),
-	FOREIGN KEY (targetID) REFERENCES character(characterID)
+	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
+	FOREIGN KEY (targetID) REFERENCES character(characterID) ON DELETE CASCADE
 );
 
 CREATE VIEW data AS
 	SELECT character.characterID as id, character.name, dob, personality, appearance, background,
-	gender.name as gender, race.name as race, ethnicity, STRING_AGG(source.name,', ') as source FROM character
+	gender.name as gender, race.name as race, ethnicity, STRING_AGG(source.name,', ') as source,
+	image.imageURL as profile FROM character
 	FULL OUTER JOIN gender ON gender.genderID = character.genderID
 	FULL OUTER JOIN race ON race.raceID = character.raceID
 	FULL OUTER JOIN character_source ON character_source.characterID = character.characterID
 	FULL OUTER JOIN source ON character_source.sourceID = source.sourceID
-	GROUP BY character.characterID, gender.name, race.name;
+	FULL OUTER JOIN character_profile_image ON character.characterID = character_profile_image.characterID
+	FULL OUTER JOIN image ON image.imageID = character_profile_image.imageID
+	GROUP BY character.characterID, gender.name, race.name, image.imageURL;
+
+CREATE VIEW complete_data AS
+	SELECT data.*, ARRAY_AGG(DISTINCT CONCAT(character.name, ' : ', character_relation.relationship)) as relationships FROM
+	(SELECT data.*, ARRAY_AGG(DISTINCT image.imageURL) as images, ARRAY_AGG(DISTINCT character_dislikes.name) as dislikes,
+	ARRAY_AGG(DISTINCT character_likes.name) as likes FROM data
+	JOIN character_likes ON character_likes.characterID = data.id
+	JOIN character_dislikes ON character_dislikes.characterID = data.id
+	JOIN character_in_image ON character_in_image.characterID = data.id
+	JOIN image ON image.imageID = character_in_image.imageID
+	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
+	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source) as data
+	JOIN character_relation ON character_relation.characterID = data.id
+	JOIN character ON character.characterID = character_relation.targetID
+	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
+	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source, data.images, data.likes, data.dislikes
+	ORDER BY id ASC;
