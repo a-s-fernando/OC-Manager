@@ -2,3 +2,4 @@ node_modules
 package-lock.json
 .env
 database/populate.sql
+.DS_Store
