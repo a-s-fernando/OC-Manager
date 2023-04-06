@@ -1,10 +1,15 @@
 const client = require("../database/connect");
 
 async function getAll(req, res) {
-  const data = await client.query(`SELECT * FROM complete_data;`);
-  console.log(data.rows);
-  res.json(data.rows);
+  try {
+    const data = await client.query(`SELECT * FROM complete_data;`);
+    console.log(data.rows);
+    res.json(data.rows);
+  } catch (err) {
+    res.sendStatus(500);
+  }
 }
+
 async function getFromID(req, res, query) {
   try {
     const id = parseInt(req.params.id);
@@ -12,7 +17,12 @@ async function getFromID(req, res, query) {
     console.log(data.rows);
     res.send(data.rows);
   } catch (err) {
-    res.sendStatus(404);
+    console.log(err);
+    if (err.message.includes("invalid input")) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(500);
+    }
   }
 }
 
