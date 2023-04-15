@@ -46,7 +46,7 @@ async function createCharacter(req, res) {
 
 async function createDislike(req, res) {
   const { characterID, name } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO character_dislikes(characterid, name)
     VALUES ($1, $2)`,
@@ -56,7 +56,7 @@ async function createDislike(req, res) {
 
 async function createLike(req, res) {
   const { characterID, name } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO character_likes(characterid, name)
     VALUES ($1, $2)`,
@@ -66,7 +66,7 @@ async function createLike(req, res) {
 
 async function createCharacterInImage(req, res) {
   const { imageID, characterID } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO character_in_image(imageID, characterID)
     VALUES ($1, $2)`,
@@ -76,7 +76,7 @@ async function createCharacterInImage(req, res) {
 
 async function createProfileImage(req, res) {
   const { imageID, characterID } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO character_profile_image(imageID, characterID)
     VALUES ($1, $2)`,
@@ -86,17 +86,7 @@ async function createProfileImage(req, res) {
 
 async function createCharacterRelation(req, res) {
   const { characterID, targetID, relationship } = req.body;
-  await client.query(
-    res,
-    `INSERT INTO character_relation(characterID, targetID, relationship)
-    VALUES ($1, $2, $3)`,
-    [characterID, targetID, relationship]
-  );
-}
-
-async function createCharacterRelation(req, res) {
-  const { characterID, targetID, relationship } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO character_relation(characterID, targetID, relationship)
     VALUES ($1, $2, $3)`,
@@ -106,7 +96,7 @@ async function createCharacterRelation(req, res) {
 
 async function createCharacterSource(req, res) {
   const { characterID, sourceID } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO character_source(characterID, sourceID)
     VALUES ($1, $2)`,
@@ -116,7 +106,7 @@ async function createCharacterSource(req, res) {
 
 async function createGender(req, res) {
   const { name } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO gender(name)
     VALUES ($1)`,
@@ -126,7 +116,7 @@ async function createGender(req, res) {
 
 async function createImage(req, res) {
   const { imageurl } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO image(imageurl)
     VALUES ($1)`,
@@ -136,7 +126,7 @@ async function createImage(req, res) {
 
 async function createRace(req, res) {
   const { name } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO race(name)
     VALUES ($1)`,
@@ -146,7 +136,7 @@ async function createRace(req, res) {
 
 async function createSource(req, res) {
   const { name } = req.body;
-  await client.query(
+  await dbCreate(
     res,
     `INSERT INTO source(name)
     VALUES ($1)`,
