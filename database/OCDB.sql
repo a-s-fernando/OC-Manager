@@ -115,13 +115,13 @@ CREATE VIEW complete_data AS
 	SELECT data.*, ARRAY_AGG(DISTINCT CONCAT(character.name, ' : ', character_relation.relationship)) as relationships FROM
 	(SELECT data.*, ARRAY_AGG(DISTINCT image.imageURL) as images, ARRAY_AGG(DISTINCT character_dislikes.name) as dislikes,
 	ARRAY_AGG(DISTINCT character_likes.name) as likes FROM data
-	JOIN character_likes ON character_likes.characterID = data.id
-	JOIN character_dislikes ON character_dislikes.characterID = data.id
-	JOIN character_in_image ON character_in_image.characterID = data.id
-	JOIN image ON image.imageID = character_in_image.imageID
+	FULL OUTER JOIN character_likes ON character_likes.characterID = data.id
+	FULL OUTER JOIN character_dislikes ON character_dislikes.characterID = data.id
+	FULL OUTER JOIN character_in_image ON character_in_image.characterID = data.id
+	FULL OUTER JOIN image ON image.imageID = character_in_image.imageID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
 	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source) as data
-	JOIN character_relation ON character_relation.characterID = data.id
+	FULL OUTER JOIN character_relation ON character_relation.characterID = data.id
 	JOIN character ON character.characterID = character_relation.targetID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
 	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source, data.images, data.likes, data.dislikes
