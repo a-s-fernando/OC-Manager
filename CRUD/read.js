@@ -1,11 +1,14 @@
 const client = require("../database/connect");
+const format = require("pg-format");
 
-async function getAll(req, res) {
+async function getAll(req, res, table) {
   try {
-    const data = await client.query(`SELECT * FROM complete_data;`);
+    query = format(`SELECT * FROM %I`, table);
+    const data = await client.query(query);
     console.log(data.rows);
     res.json(data.rows);
   } catch (err) {
+    console.log(err);
     res.sendStatus(500);
   }
 }
@@ -84,12 +87,36 @@ async function getImages(req, res) {
   );
 }
 
+async function getAllCharacters(req, res) {
+  getAll(req, res, "complete_data");
+}
+
+async function getAllImages(req, res) {
+  getAll(req, res, "image");
+}
+
+async function getAllGenders(req, res) {
+  getAll(req, res, "gender");
+}
+
+async function getAllRaces(req, res) {
+  getAll(req, res, "race");
+}
+
+async function getAllSources(req, res) {
+  getAll(req, res, "source");
+}
+
 module.exports = {
-  getAll,
   getOne,
   getRelations,
   getLikes,
   getDislikes,
   getProfile,
   getImages,
+  getAllCharacters,
+  getAllGenders,
+  getAllImages,
+  getAllRaces,
+  getAllSources,
 };
