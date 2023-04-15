@@ -1,12 +1,16 @@
 const express = require("express");
 const {
-  getAll,
   getOne,
   getRelations,
   getLikes,
   getDislikes,
   getProfile,
   getImages,
+  getAllCharacters,
+  getAllGenders,
+  getAllImages,
+  getAllRaces,
+  getAllSources,
 } = require("./CRUD/read");
 const {
   deleteLike,
@@ -20,6 +24,19 @@ const {
   deleteRelation,
   deleteCharacter,
 } = require("./CRUD/delete");
+const {
+  createCharacter,
+  createDislike,
+  createLike,
+  createCharacterInImage,
+  createProfileImage,
+  createCharacterRelation,
+  createCharacterSource,
+  createGender,
+  createImage,
+  createRace,
+  createSource,
+} = require("./CRUD/create");
 
 const app = express();
 app.use(express.json());
@@ -28,24 +45,41 @@ app.get("/", (req, res) => {
   res.json({ Message: "Welcome to the API." });
 });
 
-app.get("/characters", getAll);
-app.get("/characters/:id", getOne);
-app.get("/characters/:id/relations", getRelations);
-app.get("/characters/:id/likes", getLikes);
-app.get("/characters/:id/dislikes", getDislikes);
-app.get("/characters/:id/profileimage", getProfile);
-app.get("/characters/:id/images", getImages);
+app.get("/character", getAllCharacters);
+app.get("/character/:id", getOne);
+app.get("/character/:id/relations", getRelations);
+app.get("/character/:id/likes", getLikes);
+app.get("/character/:id/dislikes", getDislikes);
+app.get("/character/:id/profile_image", getProfile);
+app.get("/character/:id/images", getImages);
+app.get("/gender", getAllGenders);
+app.get("/image", getAllImages);
+app.get("/race", getAllRaces);
+app.get("/source", getAllSources);
 
-app.delete("/delete/like", deleteLike);
-app.delete("/delete/dislike", deleteDislike);
-app.delete("/delete/source", deleteSource);
-app.delete("/delete/race", deleteRace);
-app.delete("/delete/gender", deleteGender);
-app.delete("/delete/image", deleteImage);
-app.delete("/delete/profileimage", deleteProfileImage);
-app.delete("/delete/characterfromimage", deleteCharacterFromImage);
-app.delete("/delete/relation", deleteRelation);
-app.delete("/delete/character", deleteCharacter);
+app.delete("/like", deleteLike);
+app.delete("/dislike", deleteDislike);
+app.delete("/source", deleteSource);
+app.delete("/race", deleteRace);
+app.delete("/gender", deleteGender);
+app.delete("/image", deleteImage);
+app.delete("/profile_image", deleteProfileImage);
+app.delete("/character_in_image", deleteCharacterFromImage);
+app.delete("/relations", deleteRelation);
+app.delete("/character", deleteCharacter);
+
+app.post("/character", createCharacter);
+app.post("/dislike", createDislike);
+app.post("/like", createLike);
+app.post("/image", createImage);
+app.post("/profile_image", createProfileImage);
+app.post("/character_in_image", createCharacterInImage);
+app.post("/gender", createGender);
+app.post("/race", createRace);
+app.post("/source", createSource);
+app.post("/character_source", createCharacterSource);
+app.post("/character", createCharacter);
+app.post("/relation", createCharacterRelation);
 
 app.listen(3000, () => {
   console.log("online");
