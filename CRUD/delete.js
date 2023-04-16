@@ -8,7 +8,11 @@ async function dbDelete(res, query, args) {
       message: `Query successful.`,
     });
   } catch (err) {
-    res.sendStatus(500);
+    console.log(err.message);
+    res.status(500).json({
+      error: true,
+      message: `Query failed.`,
+    });
   }
 }
 
