@@ -38,6 +38,8 @@ const {
   createSource,
 } = require("./CRUD/create");
 
+const updateCharacter = require("./CRUD/update");
+
 const app = express();
 app.use(express.json());
 
@@ -80,6 +82,8 @@ app.post("/source", createSource);
 app.post("/character_source", createCharacterSource);
 app.post("/character", createCharacter);
 app.post("/relation", createCharacterRelation);
+
+app.put("/character", updateCharacter);
 
 app.listen(3000, () => {
   console.log("online");
