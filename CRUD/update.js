@@ -46,4 +46,61 @@ async function updateCharacter(req, res) {
   );
 }
 
-module.exports = updateCharacter;
+async function updateRelation(req, res) {
+  const { relationID, relationship } = req.body;
+  await dbUpdate(
+    res,
+    `UPDATE character_relation SET relationship = $1
+    WHERE relationID = $2`,
+    [relationID, relationship]
+  );
+}
+
+async function updateSource(req, res) {
+  const { sourceID, name } = req.body;
+  await dbUpdate(
+    res,
+    `UPDATE source SET name = $1
+    WHERE sourceID = $2`,
+    [sourceID, name]
+  );
+}
+
+async function updateImage(req, res) {
+  const { imageID, imageURL } = req.body;
+  await dbUpdate(
+    res,
+    `UPDATE image SET imageURL = $1
+    WHERE imageID = $2`,
+    [imageURL, imageID]
+  );
+}
+
+async function updateRace(req, res) {
+  const { raceID, name } = req.body;
+  await dbUpdate(
+    res,
+    `UPDATE race SET name = $1
+    WHERE raceID = $2`,
+    [name, raceID]
+  );
+}
+
+async function updateGender(req, res) {
+  const { genderID, name } = req.body;
+  await dbUpdate(
+    res,
+    `UPDATE gender SET name = $1
+    WHERE genderID = $2`,
+    [name, genderID]
+  );
+}
+
+module.exports = {
+  updateCharacter,
+  updateRelation,
+  updateSource,
+  updateImage,
+  updateRace,
+  updateGender,
+};
