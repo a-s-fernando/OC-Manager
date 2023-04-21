@@ -103,26 +103,26 @@ CREATE VIEW data AS
 	SELECT character.characterID as id, character.name, dob, personality, appearance, background,
 	gender.name as gender, race.name as race, ethnicity, STRING_AGG(source.name,', ') as source,
 	image.imageURL as profile FROM character
-	FULL OUTER JOIN gender ON gender.genderID = character.genderID
-	FULL OUTER JOIN race ON race.raceID = character.raceID
-	FULL OUTER JOIN character_source ON character_source.characterID = character.characterID
-	FULL OUTER JOIN source ON character_source.sourceID = source.sourceID
-	FULL OUTER JOIN character_profile_image ON character.characterID = character_profile_image.characterID
-	FULL OUTER JOIN image ON image.imageID = character_profile_image.imageID
+	LEFT OUTER JOIN gender ON gender.genderID = character.genderID
+	LEFT OUTER JOIN race ON race.raceID = character.raceID
+	LEFT OUTER JOIN character_source ON character_source.characterID = character.characterID
+	LEFT OUTER JOIN source ON character_source.sourceID = source.sourceID
+	LEFT OUTER JOIN character_profile_image ON character.characterID = character_profile_image.characterID
+	LEFT OUTER JOIN image ON image.imageID = character_profile_image.imageID
 	GROUP BY character.characterID, gender.name, race.name, image.imageURL;
 
 CREATE VIEW complete_data AS
 	SELECT data.*, ARRAY_AGG(DISTINCT CONCAT(character.name, ' : ', character_relation.relationship)) as relationships FROM
 	(SELECT data.*, ARRAY_AGG(DISTINCT image.imageURL) as images, ARRAY_AGG(DISTINCT character_dislikes.name) as dislikes,
 	ARRAY_AGG(DISTINCT character_likes.name) as likes FROM data
-	FULL OUTER JOIN character_likes ON character_likes.characterID = data.id
-	FULL OUTER JOIN character_dislikes ON character_dislikes.characterID = data.id
-	FULL OUTER JOIN character_in_image ON character_in_image.characterID = data.id
-	FULL OUTER JOIN image ON image.imageID = character_in_image.imageID
+	LEFT OUTER JOIN character_likes ON character_likes.characterID = data.id
+	LEFT OUTER JOIN character_dislikes ON character_dislikes.characterID = data.id
+	LEFT OUTER JOIN character_in_image ON character_in_image.characterID = data.id
+	LEFT OUTER JOIN image ON image.imageID = character_in_image.imageID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
 	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source) as data
-	FULL OUTER JOIN character_relation ON character_relation.characterID = data.id
-	FULL OUTER JOIN character ON character.characterID = character_relation.targetID
+	LEFT OUTER JOIN character_relation ON character_relation.characterID = data.id
+	LEFT OUTER JOIN character ON character.characterID = character_relation.targetID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
 	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source, data.images, data.likes, data.dislikes
 	ORDER BY id ASC;
