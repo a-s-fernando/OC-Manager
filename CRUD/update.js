@@ -18,7 +18,7 @@ async function dbUpdate(res, query, args) {
 
 async function updateCharacter(req, res) {
   const {
-    characterID,
+    id,
     name,
     dob,
     personality,
@@ -41,18 +41,18 @@ async function updateCharacter(req, res) {
       genderID,
       raceID,
       ethnicity,
-      characterID,
+      id,
     ]
   );
 }
 
 async function updateRelation(req, res) {
-  const { relationID, relationship } = req.body;
+  const { id, relationship } = req.body;
   await dbUpdate(
     res,
     `UPDATE character_relation SET relationship = $1
     WHERE relationID = $2`,
-    [relationID, relationship]
+    [id, relationship]
   );
 }
 
