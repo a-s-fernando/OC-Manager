@@ -115,12 +115,12 @@ async function createGender(req, res) {
 }
 
 async function createImage(req, res) {
-  const { imageurl } = req.body;
+  const { imageURL } = req.body;
   await dbCreate(
     res,
     `INSERT INTO image(imageurl)
     VALUES ($1)`,
-    [imageurl]
+    [imageURL]
   );
 }
 

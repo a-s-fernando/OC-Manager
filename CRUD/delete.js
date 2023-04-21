@@ -89,13 +89,12 @@ async function deleteImage(req, res) {
 }
 
 async function deleteProfileImage(req, res) {
-  const { imageID, characterID } = req.body;
+  const { characterID } = req.body;
   await dbDelete(
     res,
     `DELETE FROM character_profile_image
-    WHERE character_profile_image.imageID = $1
-    AND character_profile_image.characterID = $2`,
-    [imageID, characterID]
+    WHERE character_profile_image.characterID = $1`,
+    [characterID]
   );
 }
 

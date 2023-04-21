@@ -42,7 +42,7 @@ async function getRelations(req, res) {
   getFromID(
     req,
     res,
-    `SELECT character.characterID, character.name, character_relation.relationship as relationship FROM character
+    `SELECT character.characterID, character.name, character_relation.relationship, character_relation.relationID FROM character
   JOIN character_relation ON character_relation.targetID = character.characterID
   WHERE character_relation.characterID = $1;`
   );
@@ -52,7 +52,7 @@ async function getLikes(req, res) {
   getFromID(
     req,
     res,
-    `SELECT character_likes.name as name FROM character_likes
+    `SELECT character_likes.name FROM character_likes
   JOIN character ON character.characterID = character_likes.characterID
   WHERE character.characterID = $1;`
   );

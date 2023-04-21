@@ -57,32 +57,32 @@ async function updateRelation(req, res) {
 }
 
 async function updateSource(req, res) {
-  const { sourceID, name } = req.body;
+  const { id, name } = req.body;
   await dbUpdate(
     res,
     `UPDATE source SET name = $1
     WHERE sourceID = $2`,
-    [sourceID, name]
+    [id, name]
   );
 }
 
 async function updateImage(req, res) {
-  const { imageID, imageURL } = req.body;
+  const { id, imageURL } = req.body;
   await dbUpdate(
     res,
     `UPDATE image SET imageURL = $1
     WHERE imageID = $2`,
-    [imageURL, imageID]
+    [imageURL, id]
   );
 }
 
 async function updateRace(req, res) {
-  const { raceID, name } = req.body;
+  const { id, name } = req.body;
   await dbUpdate(
     res,
     `UPDATE race SET name = $1
     WHERE raceID = $2`,
-    [name, raceID]
+    [name, id]
   );
 }
 
