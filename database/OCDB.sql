@@ -122,7 +122,7 @@ CREATE VIEW complete_data AS
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
 	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source) as data
 	FULL OUTER JOIN character_relation ON character_relation.characterID = data.id
-	JOIN character ON character.characterID = character_relation.targetID
+	FULL OUTER JOIN character ON character.characterID = character_relation.targetID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
 	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source, data.images, data.likes, data.dislikes
 	ORDER BY id ASC;
