@@ -62,7 +62,7 @@ async function deleteRace(req, res) {
   const { id } = req.body;
   await dbDelete(
     res,
-    `DELETE FROM source
+    `DELETE FROM race
     WHERE race.raceID = $1`,
     [id]
   );
@@ -72,7 +72,7 @@ async function deleteGender(req, res) {
   const { id } = req.body;
   await dbDelete(
     res,
-    `DELETE FROM source
+    `DELETE FROM gender
     WHERE gender.genderID = $1`,
     [id]
   );
@@ -82,7 +82,7 @@ async function deleteImage(req, res) {
   const { id } = req.body;
   await dbDelete(
     res,
-    `DELETE FROM source
+    `DELETE FROM image
     WHERE image.imageID = $1`,
     [id]
   );

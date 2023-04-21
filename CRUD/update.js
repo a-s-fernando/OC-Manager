@@ -62,7 +62,7 @@ async function updateSource(req, res) {
     res,
     `UPDATE source SET name = $1
     WHERE sourceID = $2`,
-    [id, name]
+    [name, id]
   );
 }
 
@@ -87,12 +87,12 @@ async function updateRace(req, res) {
 }
 
 async function updateGender(req, res) {
-  const { genderID, name } = req.body;
+  const { id, name } = req.body;
   await dbUpdate(
     res,
     `UPDATE gender SET name = $1
     WHERE genderID = $2`,
-    [name, genderID]
+    [name, id]
   );
 }
 
