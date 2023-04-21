@@ -100,7 +100,7 @@ async function deleteProfileImage(req, res) {
 
 async function deleteCharacterFromImage(req, res) {
   const { imageID, characterID } = req.body;
-  await client.query(
+  await dbDelete(
     res,
     `DELETE FROM character_in_image
     WHERE character_in_image.imageID = $1
