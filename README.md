@@ -1,6 +1,6 @@
 # OC-Manager
 
-A toy/personal project for helping my partner store and access information on her original characters. The API can facilitate storage of:
+A toy/personal project for helping my partner store and access information on her original characters. The API can facilitate access to and storage of:
 
 - Character descriptions
 - Relationships
@@ -14,7 +14,7 @@ A toy/personal project for helping my partner store and access information on he
 
 ## Setting up the Database
 
-This API relies on a Postgres database to function. There is currently not a provided function to set up the database for you, however a **.sql** file is provided in the database folder that you can use to set it up yourself.
+This API relies on a Postgres database to function. There is not currently a provided function to set up the database for you, however a **.sql** file is provided in the database folder that you can use to set it up yourself.
 
 An entity relationship diagram of the provided OCDB.sql file can be found [here](https://ibb.co/z58NQkr).
 
