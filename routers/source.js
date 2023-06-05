@@ -1,15 +1,17 @@
 const { Router } = require("express");
 
-const { getAllSources } = require("../CRUD/read");
-const { deleteSource } = require("../CRUD/delete");
-const { createSource } = require("../CRUD/create");
-const { updateSource } = require("../CRUD/update");
+const {
+  sourceIndex,
+  deleteSource,
+  create,
+  update,
+} = require("../controllers/source");
 
 const sourceRouter = Router();
 
-sourceRouter.get("/", getAllSources);
+sourceRouter.get("/", sourceIndex);
 sourceRouter.delete("/", deleteSource);
-sourceRouter.post("/", createSource);
-sourceRouter.put("/", updateSource);
+sourceRouter.post("/", create);
+sourceRouter.put("/", update);
 
 module.exports = sourceRouter;
