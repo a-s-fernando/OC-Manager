@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const characterRouter = require("./routers/character");
 const genderRouter = require("./routers/gender");
@@ -7,6 +8,7 @@ const imageRouter = require("./routers/image");
 const sourceRouter = require("./routers/source");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
