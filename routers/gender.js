@@ -1,15 +1,17 @@
 const { Router } = require("express");
 
-const { getAllGenders } = require("../CRUD/read");
-const { deleteGender } = require("../CRUD/delete");
-const { createGender } = require("../CRUD/create");
-const { updateGender } = require("../CRUD/update");
+const {
+  genderIndex,
+  deleteGender,
+  create,
+  update,
+} = require("../controllers/gender");
 
 const genderRouter = Router();
 
-genderRouter.get("/", getAllGenders);
+genderRouter.get("/", genderIndex);
 genderRouter.delete("/", deleteGender);
-genderRouter.post("/", createGender);
-genderRouter.put("/", updateGender);
+genderRouter.post("/", create);
+genderRouter.put("/", update);
 
 module.exports = genderRouter;
