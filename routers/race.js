@@ -1,15 +1,19 @@
 const { Router } = require("express");
 
-const { getAllRaces } = require("../CRUD/read");
-const { deleteRace } = require("../CRUD/delete");
-const { createRace } = require("../CRUD/create");
-const { updateRace } = require("../CRUD/update");
+const {
+  raceIndex,
+  deleteRace,
+  create,
+  update,
+  getOne,
+} = require("../controllers/race");
 
 const raceRouter = Router();
 
-raceRouter.get("/", getAllRaces);
+raceRouter.get("/", raceIndex);
+raceRouter.get("/:id", getOne);
 raceRouter.delete("/", deleteRace);
-raceRouter.post("/", createRace);
-raceRouter.put("/", updateRace);
+raceRouter.post("/", create);
+raceRouter.put("/", update);
 
 module.exports = raceRouter;
