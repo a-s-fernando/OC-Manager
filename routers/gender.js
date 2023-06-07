@@ -2,6 +2,7 @@ const { Router } = require("express");
 
 const {
   genderIndex,
+  getOne,
   deleteGender,
   create,
   update,
@@ -10,6 +11,7 @@ const {
 const genderRouter = Router();
 
 genderRouter.get("/", genderIndex);
+genderRouter.get("/:id", getOne);
 genderRouter.delete("/", deleteGender);
 genderRouter.post("/", create);
 genderRouter.put("/", update);

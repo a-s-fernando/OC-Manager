@@ -11,6 +11,14 @@ class Gender {
     return data.rows.map((r) => new Gender(r));
   }
 
+  static async getOne(id) {
+    const data = await client.query(
+      "SELECT * FROM gender WHERE genderID = $1;",
+      [id]
+    );
+    return new Gender(data.rows[0]);
+  }
+
   static async create(name) {
     const res = await client.query(
       "INSERT INTO gender(name) VALUES ($1) RETURNING *;",

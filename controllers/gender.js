@@ -13,6 +13,20 @@ async function genderIndex(req, res) {
   }
 }
 
+async function getOne(req, res) {
+  try {
+    const id = parseInt(req.params.id);
+    const data = await Gender.getOne(id);
+    res.json(data);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({
+      error: true,
+      message: "Error reading source from DB.",
+    });
+  }
+}
+
 async function create(req, res) {
   const { name } = req.body;
   try {
@@ -58,6 +72,7 @@ async function update(req, res) {
 
 module.exports = {
   genderIndex,
+  getOne,
   create,
   deleteGender,
   update,

@@ -12,6 +12,14 @@ class Source {
     return data.rows.map((r) => new Source(r));
   }
 
+  static async getOne(id) {
+    const data = await client.query(
+      "SELECT * FROM source WHERE sourceID = $1;",
+      [id]
+    );
+    return new Source(data.rows[0]);
+  }
+
   static async create(name) {
     const res = await client.query(
       "INSERT INTO source(name) VALUES ($1) RETURNING *;",
