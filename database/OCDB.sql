@@ -54,14 +54,14 @@ CREATE TABLE IF NOT EXISTS character_source (
 );
 
 
-CREATE TABLE IF NOT EXISTS character_likes (
+CREATE TABLE IF NOT EXISTS character_like (
 	characterID INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
 	UNIQUE (characterID, name)
 );
 
-CREATE TABLE IF NOT EXISTS character_dislikes (
+CREATE TABLE IF NOT EXISTS character_dislike (
 	characterID INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
