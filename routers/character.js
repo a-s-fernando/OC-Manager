@@ -1,40 +1,49 @@
 const { Router } = require("express");
 
-const {
-  getOne,
-  getRelations,
-  getLikes,
-  getDislikes,
-  getProfile,
-  getImages,
-  getAllCharacters,
-} = require("../CRUD/read");
+const { getRelations, getProfile, getImages } = require("../CRUD/read");
 const {
   deleteProfileImage,
   deleteCharacterFromImage,
   deleteRelation,
-  deleteCharacter,
-  deleteLike,
-  deleteDislike,
 } = require("../CRUD/delete");
 const {
-  createCharacter,
   createCharacterInImage,
   createProfileImage,
   createCharacterRelation,
   createCharacterSource,
-  createLike,
-  createDislike,
 } = require("../CRUD/create");
-const { updateCharacter, updateRelation } = require("../CRUD/update");
+const { updateRelation } = require("../CRUD/update");
+const {
+  characterIndex,
+  getOne,
+  create,
+  deleteCharacter,
+  update,
+} = require("../controllers/character");
+const {
+  likeIndex,
+  getLikesForCharacter,
+  createLike,
+  deleteLike,
+  updateLike,
+} = require("../controllers/like");
+const {
+  dislikeIndex,
+  getDislikesForCharacter,
+  createDislike,
+  deleteDislike,
+  updateDislike,
+} = require("../controllers/dislike");
 
 const characterRouter = Router();
 
-characterRouter.get("/", getAllCharacters);
+characterRouter.get("/", characterIndex);
 characterRouter.get("/:id", getOne);
+characterRouter.get("/like", likeIndex);
+characterRouter.get("/:id/likes", getLikesForCharacter);
+characterRouter.get("/like", dislikeIndex);
+characterRouter.get("/:id/likes", getDislikesForCharacter);
 characterRouter.get("/:id/relations", getRelations);
-characterRouter.get("/:id/likes", getLikes);
-characterRouter.get("/:id/dislikes", getDislikes);
 characterRouter.get("/:id/profile_image", getProfile);
 characterRouter.get("/:id/images", getImages);
 
@@ -45,7 +54,7 @@ characterRouter.delete("/character_in_image", deleteCharacterFromImage);
 characterRouter.delete("/like", deleteLike);
 characterRouter.delete("/dislike", deleteDislike);
 
-characterRouter.post("/", createCharacter);
+characterRouter.post("/", create);
 characterRouter.post("/profile_image", createProfileImage);
 characterRouter.post("/character_in_image", createCharacterInImage);
 characterRouter.post("/source", createCharacterSource);
@@ -53,7 +62,9 @@ characterRouter.post("/relation", createCharacterRelation);
 characterRouter.post("/dislike", createDislike);
 characterRouter.post("/like", createLike);
 
-characterRouter.put("/", updateCharacter);
+characterRouter.put("/", update);
 characterRouter.put("/relation", updateRelation);
+characterRouter.put("/like", updateLike);
+characterRouter.put("/dislike", updateDislike);
 
 module.exports = characterRouter;
