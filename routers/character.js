@@ -38,11 +38,11 @@ const {
 const characterRouter = Router();
 
 characterRouter.get("/", characterIndex);
-characterRouter.get("/:id", getOne);
 characterRouter.get("/like", likeIndex);
+characterRouter.get("/dislike", dislikeIndex);
 characterRouter.get("/:id/likes", getLikesForCharacter);
-characterRouter.get("/like", dislikeIndex);
-characterRouter.get("/:id/likes", getDislikesForCharacter);
+characterRouter.get("/:id", getOne);
+characterRouter.get("/:id/dislikes", getDislikesForCharacter);
 characterRouter.get("/:id/relations", getRelations);
 characterRouter.get("/:id/profile_image", getProfile);
 characterRouter.get("/:id/images", getImages);
