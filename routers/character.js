@@ -1,18 +1,15 @@
 const { Router } = require("express");
 
-const { getRelations, getProfile, getImages } = require("../CRUD/read");
+const { getProfile, getImages } = require("../CRUD/read");
 const {
   deleteProfileImage,
   deleteCharacterFromImage,
-  deleteRelation,
 } = require("../CRUD/delete");
 const {
   createCharacterInImage,
   createProfileImage,
-  createCharacterRelation,
   createCharacterSource,
 } = require("../CRUD/create");
-const { updateRelation } = require("../CRUD/update");
 const {
   characterIndex,
   getOne,
@@ -20,6 +17,13 @@ const {
   deleteCharacter,
   update,
 } = require("../controllers/character");
+const {
+  relationIndex,
+  getRelations,
+  createRelation,
+  deleteRelation,
+  updateRelation,
+} = require("../controllers/relation");
 const {
   likeIndex,
   getLikesForCharacter,
@@ -40,6 +44,7 @@ const characterRouter = Router();
 characterRouter.get("/", characterIndex);
 characterRouter.get("/like", likeIndex);
 characterRouter.get("/dislike", dislikeIndex);
+characterRouter.get("/relation", relationIndex);
 characterRouter.get("/:id/likes", getLikesForCharacter);
 characterRouter.get("/:id", getOne);
 characterRouter.get("/:id/dislikes", getDislikesForCharacter);
@@ -58,7 +63,7 @@ characterRouter.post("/", create);
 characterRouter.post("/profile_image", createProfileImage);
 characterRouter.post("/character_in_image", createCharacterInImage);
 characterRouter.post("/source", createCharacterSource);
-characterRouter.post("/relation", createCharacterRelation);
+characterRouter.post("/relation", createRelation);
 characterRouter.post("/dislike", createDislike);
 characterRouter.post("/like", createLike);
 
