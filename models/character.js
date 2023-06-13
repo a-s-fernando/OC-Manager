@@ -114,6 +114,64 @@ class Character {
     );
     return new Character(res.rows[0]);
   }
+
+  static async createCharacterSource(characterid, sourceid) {
+    const res = await client.query(
+      `INSERT INTO character_source(characterID, sourceID)
+      VALUES ($1, $2)`,
+      [characterid, sourceid]
+    );
+  }
+
+  static async createCharacterImage(imageid, characterid) {
+    const res = await client.query(
+      `INSERT INTO character_in_image(imageID, characterID)
+      VALUES ($1, $2)`,
+      [imageid, characterid]
+    );
+  }
+
+  static async createProfileImage(imageid, characterid) {
+    const res = await client.query(
+      `INSERT INTO character_profile_image(imageID, characterID)
+      VALUES ($1, $2)`,
+      [imageid, characterid]
+    );
+  }
+
+  static async deleteCharacterImage(imageid, characterid) {
+    const res = await client.query(
+      `DELETE FROM character_in_image
+      WHERE character_in_image.imageID = $1
+      AND character_in_image.characterID = $2`,
+      [imageid, characterid]
+    );
+  }
+
+  static async deleteProfileImage(characterid) {
+    const res = await client.query(
+      `DELETE FROM character_profile_image
+      WHERE character_profile_image.characterID = $1`,
+      [characterid]
+    );
+  }
+
+  static async getProfileImage(characterid) {
+    const res = await client.query(
+      `SELECT image.imageURL as profile FROM image
+      JOIN character_profile_image ON character_profile_image.imageID = image.imageID
+      WHERE character_profile_image.characterID = $1;`,
+      [characterid]
+    );
+  }
+
+  static async getImages(characterid) {
+    const res = await client.query(
+      `SELECT images FROM complete_data
+      WHERE id = $1;`,
+      [characterid]
+    );
+  }
 }
 
 module.exports = Character;
