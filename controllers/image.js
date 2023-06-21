@@ -57,9 +57,9 @@ async function deleteImage(req, res) {
 }
 
 async function update(req, res) {
-  const { id, url } = req.body;
+  const { id, imageURL } = req.body;
   try {
-    await Image.update(id, name);
+    await Image.update(id, imageURL);
     res.status(200).json({ Message: "Updated image successfully." });
   } catch (err) {
     console.log(err.message);

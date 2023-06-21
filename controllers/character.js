@@ -62,8 +62,8 @@ async function create(req, res) {
     personality,
     appearance,
     background,
-    genderid,
-    raceid,
+    genderID,
+    raceID,
     ethnicity,
   } = req.body;
   try {
@@ -73,8 +73,8 @@ async function create(req, res) {
       personality,
       appearance,
       background,
-      genderid,
-      raceid,
+      genderID,
+      raceID,
       ethnicity
     );
 
@@ -103,9 +103,9 @@ async function deleteCharacter(req, res) {
 }
 
 async function createCharacterSource(req, res) {
-  const { characterid, sourceid } = req.body;
+  const { characterID, sourceID } = req.body;
   try {
-    await Character.createCharacterSource(characterid, sourceid);
+    await Character.createCharacterSource(characterID, sourceID);
     res.status(200).json({ Message: "Created source successfully." });
   } catch (err) {
     console.log(err.message);
@@ -117,9 +117,9 @@ async function createCharacterSource(req, res) {
 }
 
 async function createCharacterImage(req, res) {
-  const { imageid, characterid } = req.body;
+  const { imageID, characterID } = req.body;
   try {
-    await Character.createCharacterImage(imageid, characterid);
+    await Character.createCharacterImage(imageID, characterID);
     res.status(200).json({ Message: "Created character image successfully." });
   } catch (err) {
     console.log(err.message);
@@ -130,10 +130,24 @@ async function createCharacterImage(req, res) {
   }
 }
 
-async function deleteCharacterImage(req, res) {
-  const { imageid, characterid } = req.body;
+async function createProfileImage(req, res) {
+  const { imageID, characterID } = req.body;
   try {
-    await Character.deleteCharacterImage(imageid, characterid);
+    await Character.createProfileImage(imageID, characterID);
+    res.status(200).json({ Message: "Created profile image successfully." });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({
+      error: true,
+      message: `Error creating profile image.`,
+    });
+  }
+}
+
+async function deleteCharacterImage(req, res) {
+  const { imageID, characterID } = req.body;
+  try {
+    await Character.deleteCharacterImage(imageID, characterID);
     res.status(200).json({ Message: "Deleted character image successfully." });
   } catch (err) {
     console.log(err.message);
@@ -158,6 +172,20 @@ async function deleteProfileImage(req, res) {
   }
 }
 
+async function deleteCharacterSource(req, res) {
+  const { sourceID, characterID } = req.body;
+  try {
+    await Character.deleteCharacterSource(sourceID, characterID);
+    res.status(200).json({ Message: "Deleted character source successfully." });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({
+      error: true,
+      message: `Error deleting character source.`,
+    });
+  }
+}
+
 async function update(req, res) {
   const {
     id,
@@ -166,8 +194,8 @@ async function update(req, res) {
     personality,
     appearance,
     background,
-    genderid,
-    raceid,
+    genderID,
+    raceID,
     ethnicity,
   } = req.body;
   try {
@@ -178,8 +206,8 @@ async function update(req, res) {
       personality,
       appearance,
       background,
-      genderid,
-      raceid,
+      genderID,
+      raceID,
       ethnicity
     );
     res.status(200).json({ Message: "Updated character successfully." });
@@ -203,4 +231,7 @@ module.exports = {
   createProfileImage,
   deleteCharacterImage,
   deleteProfileImage,
+  deleteCharacterSource,
+  getImages,
+  getProfileImage,
 };

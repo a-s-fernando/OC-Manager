@@ -11,6 +11,7 @@ const {
   createProfileImage,
   deleteProfileImage,
   deleteCharacterImage,
+  deleteCharacterSource,
   getImages,
   getProfileImage,
 } = require("../controllers/character");
@@ -50,11 +51,12 @@ characterRouter.get("/:id/profile_image", getProfileImage);
 characterRouter.get("/:id/images", getImages);
 
 characterRouter.delete("/", deleteCharacter);
-characterRouter.delete("/relations", deleteRelation);
+characterRouter.delete("/relation", deleteRelation);
 characterRouter.delete("/profile_image", deleteProfileImage);
 characterRouter.delete("/character_in_image", deleteCharacterImage);
 characterRouter.delete("/like", deleteLike);
 characterRouter.delete("/dislike", deleteDislike);
+characterRouter.delete("/source", deleteCharacterSource);
 
 characterRouter.post("/", create);
 characterRouter.post("/profile_image", createProfileImage);

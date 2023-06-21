@@ -148,6 +148,15 @@ class Character {
     );
   }
 
+  static async deleteCharacterSource(sourceid, characterid) {
+    const res = await client.query(
+      `DELETE FROM character_source
+      WHERE character_source.sourceID = $1
+      AND character_source.characterID = $2`,
+      [sourceid, characterid]
+    );
+  }
+
   static async deleteProfileImage(characterid) {
     const res = await client.query(
       `DELETE FROM character_profile_image
@@ -163,6 +172,7 @@ class Character {
       WHERE character_profile_image.characterID = $1;`,
       [characterid]
     );
+    return res.rows[0];
   }
 
   static async getImages(characterid) {
@@ -171,6 +181,7 @@ class Character {
       WHERE id = $1;`,
       [characterid]
     );
+    return res.rows[0];
   }
 }
 

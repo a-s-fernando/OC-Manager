@@ -47,7 +47,7 @@ class Relation {
       RETURNING *;`,
       [relationship, relationid]
     );
-    return new Like(res.rows[0]);
+    return new Relation(res.rows[0]);
   }
 }
 

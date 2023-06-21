@@ -28,9 +28,9 @@ async function getRelations(req, res) {
 }
 
 async function createRelation(req, res) {
-  const { characterid, targetid } = req.body;
+  const { characterID, targetID, relationship } = req.body;
   try {
-    const data = await Relation.create(characterid, targetid);
+    const data = await Relation.create(characterID, targetID, relationship);
 
     res.status(201).json(data);
   } catch (err) {
