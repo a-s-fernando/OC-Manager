@@ -2,8 +2,8 @@ DROP VIEW IF EXISTS complete_data;
 DROP VIEW IF EXISTS data;
 DROP TABLE IF EXISTS character_source;
 DROP TABLE IF EXISTS source;
-DROP TABLE IF EXISTS character_dislikes;
-DROP TABLE IF EXISTS character_likes;
+DROP TABLE IF EXISTS character_dislike;
+DROP TABLE IF EXISTS character_like;
 DROP TABLE IF EXISTS character_profile_image;
 DROP TABLE IF EXISTS character_in_image;
 DROP TABLE IF EXISTS image;
@@ -54,14 +54,14 @@ CREATE TABLE IF NOT EXISTS character_source (
 );
 
 
-CREATE TABLE IF NOT EXISTS character_likes (
+CREATE TABLE IF NOT EXISTS character_like (
 	characterID INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
 	UNIQUE (characterID, name)
 );
 
-CREATE TABLE IF NOT EXISTS character_dislikes (
+CREATE TABLE IF NOT EXISTS character_dislike (
 	characterID INT NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	FOREIGN KEY (characterID) REFERENCES character(characterID) ON DELETE CASCADE,
@@ -113,10 +113,10 @@ CREATE VIEW data AS
 
 CREATE VIEW complete_data AS
 	SELECT data.*, ARRAY_AGG(DISTINCT CONCAT(character.name, ' : ', character_relation.relationship)) as relationships FROM
-	(SELECT data.*, ARRAY_AGG(DISTINCT image.imageURL) as images, ARRAY_AGG(DISTINCT character_dislikes.name) as dislikes,
-	ARRAY_AGG(DISTINCT character_likes.name) as likes FROM data
-	LEFT OUTER JOIN character_likes ON character_likes.characterID = data.id
-	LEFT OUTER JOIN character_dislikes ON character_dislikes.characterID = data.id
+	(SELECT data.*, ARRAY_AGG(DISTINCT image.imageURL) as images, ARRAY_AGG(DISTINCT character_dislike.name) as dislikes,
+	ARRAY_AGG(DISTINCT character_like.name) as likes FROM data
+	LEFT OUTER JOIN character_like ON character_like.characterID = data.id
+	LEFT OUTER JOIN character_dislike ON character_dislike.characterID = data.id
 	LEFT OUTER JOIN character_in_image ON character_in_image.characterID = data.id
 	LEFT OUTER JOIN image ON image.imageID = character_in_image.imageID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
