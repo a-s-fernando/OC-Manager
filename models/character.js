@@ -51,7 +51,7 @@ class Character {
     if (gender) {
       count += 1;
       query += `gender ILIKE $${count} AND `;
-      values.push(`%${gender}%`);
+      values.push(`${gender}`);
     }
     if (source) {
       count += 1;
@@ -61,7 +61,7 @@ class Character {
     if (race) {
       count += 1;
       query += `race ILIKE $${count} AND `;
-      values.push(`%${race}%`);
+      values.push(`${race}`);
     }
     if (name || gender || source || race) {
       query = query.slice(0, -5);
