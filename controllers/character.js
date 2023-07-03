@@ -2,7 +2,11 @@ const Character = require("../models/character");
 
 async function characterIndex(req, res) {
   try {
-    const data = await Character.getAll();
+    let name = req.query.name;
+    let gender = req.query.gender;
+    let source = req.query.source;
+    let race = req.query.race;
+    const data = await Character.getAll(name, gender, source, race);
     res.json(data);
   } catch (err) {
     console.log(err.message);

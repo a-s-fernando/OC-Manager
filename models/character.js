@@ -1,3 +1,4 @@
+const { query } = require("express");
 const client = require("../database/connect");
 
 class Character {
@@ -35,8 +36,37 @@ class Character {
     this.likes = likes;
   }
 
-  static async getAll() {
-    const data = await client.query("SELECT * FROM complete_data;");
+  static async getAll(name, gender, source, race) {
+    let query = "SELECT * FROM complete_data";
+    let count = 0;
+    let values = [];
+    if (name || gender || source || race) {
+      query += " WHERE ";
+    }
+    if (name) {
+      count += 1;
+      query += `name ILIKE $${count} AND `;
+      values.push(`%${name}%`);
+    }
+    if (gender) {
+      count += 1;
+      query += `gender ILIKE $${count} AND `;
+      values.push(`%${gender}%`);
+    }
+    if (source) {
+      count += 1;
+      query += `source ILIKE $${count} AND `;
+      values.push(`%${source}%`);
+    }
+    if (race) {
+      count += 1;
+      query += `race ILIKE $${count} AND `;
+      values.push(`%${race}%`);
+    }
+    if (name || gender || source || race) {
+      query = query.slice(0, -5);
+    }
+    const data = await client.query(query, values);
     return data.rows.map((r) => new Character(r));
   }
 
