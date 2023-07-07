@@ -104,7 +104,9 @@ class Character {
     if (res.rows.length != 1) {
       throw new Error("Error creating new character.");
     }
-    return new Character(res.rows[0]);
+    let newCharacter = new Character(res.rows[0]);
+    newCharacter.id = res.rows[0].characterid;
+    return newCharacter;
   }
 
   static async delete(id) {
