@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS character_relation (
 
 CREATE VIEW data AS
 	SELECT character.characterID as id, character.name, dob, personality, appearance, background,
-	gender.name as gender, race.name as race, ethnicity, STRING_AGG(source.name,', ') as source,
+	gender.name as gender, gender.genderID as genderID, race.name as race, race.raceID as raceID, ethnicity, STRING_AGG(source.name,', ') as source,
 	image.imageURL as profile FROM character
 	LEFT OUTER JOIN gender ON gender.genderID = character.genderID
 	LEFT OUTER JOIN race ON race.raceID = character.raceID
@@ -109,7 +109,7 @@ CREATE VIEW data AS
 	LEFT OUTER JOIN source ON character_source.sourceID = source.sourceID
 	LEFT OUTER JOIN character_profile_image ON character.characterID = character_profile_image.characterID
 	LEFT OUTER JOIN image ON image.imageID = character_profile_image.imageID
-	GROUP BY character.characterID, gender.name, race.name, image.imageURL;
+	GROUP BY character.characterID, gender.name, gender.genderID, race.name, race.raceID, image.imageURL;
 
 CREATE VIEW complete_data AS
 	SELECT data.*, ARRAY_AGG(DISTINCT CONCAT(character.name, ' : ', character_relation.relationship)) as relationships FROM
@@ -120,9 +120,9 @@ CREATE VIEW complete_data AS
 	LEFT OUTER JOIN character_in_image ON character_in_image.characterID = data.id
 	LEFT OUTER JOIN image ON image.imageID = character_in_image.imageID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
-	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source) as data
+	data.appearance, data.background, data.gender, data.genderID, data.race, data.raceID, data.ethnicity, data.source) as data
 	LEFT OUTER JOIN character_relation ON character_relation.characterID = data.id
 	LEFT OUTER JOIN character ON character.characterID = character_relation.targetID
 	GROUP BY data.id, data.name, data.dob, data.personality, data.profile,
-	data.appearance, data.background, data.gender, data.race, data.ethnicity, data.source, data.images, data.likes, data.dislikes
+	data.appearance, data.background, data.gender, data.genderID, data.race, data.raceID, data.ethnicity, data.source, data.images, data.likes, data.dislikes
 	ORDER BY id ASC;

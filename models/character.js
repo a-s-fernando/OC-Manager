@@ -10,7 +10,9 @@ class Character {
     appearance,
     background,
     gender,
+    genderid,
     race,
+    raceid,
     ethnicity,
     source,
     profile,
@@ -26,7 +28,9 @@ class Character {
     this.appearance = appearance;
     this.background = background;
     this.gender = gender;
+    this.genderid = genderid;
     this.race = race;
+    this.raceid = raceid;
     this.ethnicity = ethnicity;
     this.source = source;
     this.profile = profile;
