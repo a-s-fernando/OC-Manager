@@ -9,6 +9,7 @@ class Source {
 
   static async getAll() {
     const data = await client.query("SELECT * FROM source;");
+    console.log(data);
     return data.rows.map((r) => new Source(r));
   }
 
